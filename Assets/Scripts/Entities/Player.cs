@@ -14,6 +14,8 @@ public class Player : PlayableObject
     {
         health = new Health(100, 0.5f, 100);
         playerRB = GetComponent<Rigidbody2D>();
+
+        testScore++;
     }
 
     public override void Move(Vector2 direction, Vector2 target)

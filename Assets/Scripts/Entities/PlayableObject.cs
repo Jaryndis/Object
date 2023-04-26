@@ -4,6 +4,9 @@ using UnityEngine;
 
 public abstract class PlayableObject : MonoBehaviour, IDamageable
 {
+
+    private protected int testScore;
+
    public Health health = new Health();
     public Weapon weapon;
 
