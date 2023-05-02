@@ -9,6 +9,12 @@ public class MeleeEnemy : Enemy
 
     float timer = 0;
 
+
+    public void SetMeleeEnemy(float _attackRange, float _attackTime)
+    {
+        attackRange = _attackRange;
+        attackTime = _attackTime;
+    }
     protected override void Start()
     {
         base.Start();

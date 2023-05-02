@@ -8,6 +8,11 @@ public class Health
     private float maxHealth;
     private float healthRegenerated;
 
+    public float GetHealth()
+    {
+        return currentHealth;
+    }
+
     public Health(float _maxHealth)
     {
         maxHealth = _maxHealth;

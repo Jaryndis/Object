@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 public class Enemy : PlayableObject
 {
     //private float speed;
@@ -12,7 +13,15 @@ public class Enemy : PlayableObject
 
     protected virtual void Start()
     {
-        target = GameObject.FindWithTag("Player").transform;
+        try
+        {
+            target = GameObject.FindWithTag("Player").transform;
+        }catch(NullReferenceException e)
+        {
+            Debug.Log("There is no player in the scene, destroying myself" + e);
+            Destroy(gameObject);
+        }
+        
     }
 
     protected virtual void Update()
