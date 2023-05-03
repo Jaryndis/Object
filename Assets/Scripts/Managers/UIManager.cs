@@ -7,17 +7,23 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] TMP_Text txtHealth;
     [SerializeField] TMP_Text txtScore;
+    [SerializeField] TMP_Text txtHighScore;
     [SerializeField] Player player;
+
+    private ScoreManager scoreManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        player.OnHealthUpdate += UpdateHealth;
+        scoreManager = GameManager.GetInstance().scoreManager;
+        //txtHighScore.SetText(scoreManager.GetHighScore().ToString());
+
+        player.health.OnHealthUpdate += UpdateHealth;
     }
 
     private void OnDisable()
     {
-        player.OnHealthUpdate -= UpdateHealth;
+        player.health.OnHealthUpdate -= UpdateHealth;
     }
 
     // Update is called once per frame
@@ -33,6 +39,13 @@ public class UIManager : MonoBehaviour
 
     public void UpdateScore()
     {
-        txtScore.SetText(GameManager.GetInstance().scoreManager.GetScore().ToString());
+        //txtScore.SetText(GameManager.GetInstance().scoreManager.GetScore().ToString());
+        txtScore.SetText(scoreManager.GetScore().ToString());
+    }
+
+    public void UpdateHighScore()
+    {
+        //txtScore.SetText(GameManager.GetInstance().scoreManager.GetScore().ToString());
+        txtHighScore.SetText(scoreManager.GetHighScore().ToString());
     }
 }

@@ -6,8 +6,8 @@ public class Weapon
 {
     string name;
     float damage;
-    float bulletSpeed;
 
+    float bulletSpeed;
 
     public Weapon(string _name, float _damage, float _bulletSpeed)
     {
@@ -24,11 +24,6 @@ public class Weapon
         GameObject.Destroy(tempBullet.gameObject, timeToDie);
     }
 
-    public float GetDamage()
-    {
-        return damage;
-    }
-
     public Weapon(string _name, float _damage)
     {
         name = _name;
@@ -38,5 +33,10 @@ public class Weapon
     public Weapon()
     {
         Debug.Log("General weapon");
+    }
+
+    public float GetDamage()
+    {
+        return damage;
     }
 }

@@ -11,9 +11,9 @@ public class Bullet : MonoBehaviour
 
     public void SetBullet(float _damage, string _targetTag, float _speed = 10)
     {
-        damage = _damage;
-        speed = _speed;
-        targetTag = _targetTag;
+        this.damage = _damage;
+        this.speed = _speed;
+        this.targetTag = _targetTag;
     }
 
     private void Update()
@@ -34,23 +34,18 @@ public class Bullet : MonoBehaviour
             Debug.Log("Damage something");
 
             GameManager.GetInstance().scoreManager.IncrementScore();
-
             Destroy(gameObject);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-
-        if(!collision.gameObject.CompareTag(targetTag))
-        {
+        if (!collision.gameObject.CompareTag(targetTag))
             return;
-        }
 
         IDamageable damageable = collision.GetComponent<IDamageable>();
         Damage(damageable);
 
-        Debug.Log("Other obejct's name =" + collision.gameObject.name);
+        Debug.Log("Other obejct's name = " + collision.gameObject.name);
     }
 }

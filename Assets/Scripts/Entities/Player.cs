@@ -9,27 +9,22 @@ public class Player : PlayableObject
     [SerializeField] private float speed;
     [SerializeField] Camera cam;
 
-    private Rigidbody2D playerRB;
-
     [SerializeField] float weaponDamage = 1;
     [SerializeField] float bulletSpeed = 10;
     [SerializeField] Bullet bulletPrefab;
 
-    public Action<float> OnHealthUpdate;
+    private Rigidbody2D playerRB;
 
-    private void Start()
+    //public Action<float> OnHealthUpdate;
+
+    private void Awake()
     {
-        health = new Health(100, 0.5f, 100);
+        health = new Health(100, 0.5f, 50);
         playerRB = GetComponent<Rigidbody2D>();
 
         weapon = new Weapon("Player Weapon", weaponDamage, bulletSpeed);
 
-        OnHealthUpdate?.Invoke(health.GetHealth());
-    }
-
-    private void Update()
-    {
-        health.RegenHealth();
+        //OnHealthUpdate?.Invoke(health.GetHealth());
     }
 
     public override void Move(Vector2 direction, Vector2 target)
@@ -63,14 +58,19 @@ public class Player : PlayableObject
 
     public override void GetDamage(float damage)
     {
-        Debug.Log("Player damaged!");
+        Debug.Log("Player damaged!" + damage);
         health.DeductHealth(damage);
 
-        OnHealthUpdate?.Invoke(health.GetHealth());
+        //OnHealthUpdate?.Invoke(health.GetHealth());
 
         if(health.GetHealth() <= 0)
         {
             Die();
         }
+    }
+
+    private void Update()
+    {
+        health.RegenHealth();
     }
 }

@@ -18,8 +18,7 @@ public class Enemy : PlayableObject
             target = GameObject.FindWithTag("Player").transform;
         }catch(NullReferenceException e)
         {
-            Debug.Log("There is no player in the scene, destroying myself" + e);
-            Destroy(gameObject);
+            Debug.Log("Player doesn't exist again, self destroying" + e);
         }
         
     }
@@ -63,7 +62,10 @@ public class Enemy : PlayableObject
 
     public override void Die()
     {
+        GameManager.GetInstance().NotifyDeath(this);
         Debug.Log("Player died");
+        //Quick update prep for next class
+        Destroy(gameObject);
     }
 
     public override void Attack(float interval)
@@ -78,6 +80,12 @@ public class Enemy : PlayableObject
 
     public override void GetDamage(float damage)
     {
-       
+        //Quick updated prep for next class
+        Debug.Log("Enemy damaged!");
+        health.DeductHealth(damage);
+        if(health.GetHealth() <= 0)
+        {
+            Die();
+        }
     }
 }

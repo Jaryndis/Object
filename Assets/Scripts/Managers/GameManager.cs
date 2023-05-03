@@ -1,22 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager instance;
 
     [SerializeField] GameObject enemyPrefab;
     [SerializeField] Transform[] spawnPositions;
 
     GameObject tempEnemy;
 
-    Weapon meleeWeapon = new Weapon("Melee", 1, 0);
+    public static GameManager instance;
+
+    public ScoreManager scoreManager;
+
+    private Weapon meleeWeapon = new Weapon("Melee", 1, 0);
 
     bool isEnemySpawning;
     [SerializeField] float enemySpawnRate;
 
-    public ScoreManager scoreManager;
+    private Player player;
+
+    public PickupSpawner pickupSpawner;
 
     public static GameManager GetInstance()
     {
@@ -33,6 +39,19 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
 
+    void CreateEnemy()
+    {
+        tempEnemy = Instantiate(enemyPrefab);
+        tempEnemy.transform.position = spawnPositions[UnityEngine.Random.Range(0, spawnPositions.Length)].position;
+        tempEnemy.GetComponent<Enemy>().weapon = meleeWeapon;
+        tempEnemy.GetComponent<MeleeEnemy>().SetMeleeEnemy(2, 0.25f);
+    }
+
+    public void NotifyDeath(Enemy enemy)
+    {
+        pickupSpawner.SpawnPickup(enemy.transform.position);
+    }
+
     private void Awake()
     {
         SetSingleton();
@@ -40,33 +59,43 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FindPlayer();
+
         isEnemySpawning = true;
-        StartCoroutine(EnemySpawner());
+        StartCoroutine(EnemySPawner());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.X))
+        /*if(Input.GetKeyDown(KeyCode.X) || Input.GetMouseButtonDown(1))
         {
             CreateEnemy();
-        }
+        }*/
     }
 
-    void CreateEnemy()
-    {
-        tempEnemy = Instantiate(enemyPrefab);
-        tempEnemy.transform.position = spawnPositions[Random.Range(0, spawnPositions.Length)].position;
-        tempEnemy.GetComponent<Enemy>().weapon = meleeWeapon;
-        tempEnemy.GetComponent<MeleeEnemy>().SetMeleeEnemy(2, 0.25f);
-    }
-
-    IEnumerator EnemySpawner()
+    IEnumerator EnemySPawner()
     {
         while(isEnemySpawning)
         {
-            yield return new WaitForSeconds(1.0f / enemySpawnRate);
+            yield return new WaitForSeconds(1 / enemySpawnRate);
             CreateEnemy();
         }
+    }
+
+    void FindPlayer()
+    {
+        try
+        {
+            player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        }catch(NullReferenceException e)
+        {
+            Debug.Log("There is no player in the scene");
+        }
+    }
+
+    public Player GetPlayer()
+    {
+        return player;
     }
 }
