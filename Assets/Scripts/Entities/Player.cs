@@ -15,6 +15,7 @@ public class Player : PlayableObject
 
     private Rigidbody2D playerRB;
 
+    public Action OnDeath;
     //public Action<float> OnHealthUpdate;
 
     private void Awake()
@@ -25,6 +26,7 @@ public class Player : PlayableObject
         weapon = new Weapon("Player Weapon", weaponDamage, bulletSpeed);
 
         //OnHealthUpdate?.Invoke(health.GetHealth());
+        cam = Camera.main;
     }
 
     public override void Move(Vector2 direction, Vector2 target)
@@ -48,6 +50,7 @@ public class Player : PlayableObject
     public override void Die()
     {
         Debug.Log("Player died");
+        OnDeath?.Invoke();
         Destroy(gameObject);
     }
 
