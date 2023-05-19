@@ -17,6 +17,8 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         highscore = PlayerPrefs.GetInt("HighScore");
+        OnHighScoreUpdated?.Invoke();
+        GameManager.GetInstance().OnGameStart += OnGameStart;
     }
 
     public int GetScore()
@@ -43,5 +45,11 @@ public class ScoreManager : MonoBehaviour
     public void SetHighScore()
     {
         PlayerPrefs.SetInt("HighScore", highscore);
+    }
+
+    public void OnGameStart()
+    {
+        score = 0;
+        //highscore = 0;
     }
 }
