@@ -1,0 +1,4 @@
+repository "ObjectsProject@CSBootCampFeb@cloud"
+  path "/"
+    br "/main"
+    co "/main"
